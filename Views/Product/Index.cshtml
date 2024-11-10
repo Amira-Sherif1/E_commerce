@@ -1,0 +1,76 @@
+﻿@model List<Product>
+
+<div class="row mb-3">
+    <div class="col-9">
+        <h3>Product List</h3>
+    </div>
+
+    <div class="col-3">
+        <a href="/Product/Add"><button type="button" class="btn btn-success">Add</button></a>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Price</th>
+            <th scope="col">Rate</th>
+            <th scope="col">Category Name</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th scope="row">@item.Id</th>
+                <td>@item.Name</td>
+                <td>@item.Price</td>
+                <td>@item.Rate</td>
+                <td>@item.Category.Name</td>
+                <td>
+                    <a href="/Product/Edit?Id=@item.Id"><button type="button" class="btn btn-success">Edit</button></a>
+                    <!-- Delete button triggers the modal -->
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-productid="@item.Id">
+                        Delete
+                    </button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Modal for Delete Confirmation -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this product?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" action="/Product/Delete">
+                    <input type="hidden" name="Id" id="deleteProductId" />
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Script to handle product ID passing -->
+<script>
+    var deleteModal = document.getElementById('deleteModal');
+    deleteModal.addEventListener('show.bs.modal', function (event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var productId = button.getAttribute('data-productid'); // Extract product ID from data-* attribute
+        var deleteInput = document.getElementById('deleteProductId');
+        deleteInput.value = productId; // Set the value in the hidden input field
+    });
+</script>

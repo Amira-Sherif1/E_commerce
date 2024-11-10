@@ -1,0 +1,16 @@
+﻿
+@model Category
+<div class="row mb-3">
+    <h2><a href=""><i class="bi bi-arrow-left"></i></a> Create New Category</h2>
+</div>
+
+<div class="row">
+    <form asp-action="CreateCategory" asp-controller="Category" method="post">
+       
+        <div class="mb-3">
+            <label   class="form-label">Category Name</label>
+            <input type="text" class="form-control" asp-for="Name" value="">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
